@@ -1,10 +1,10 @@
 {
-  "name": "react-cache-buster",
-  "version": "0.1.6",
+  "name": "react-iammolina-cache-buster",
+  "version": "0.1.8",
   "description": "This package allows clients to automatically check the new version when a new version is released in the production environment, and if a new version is published, clearing the cache and reload the page.",
-  "author": "CagriAldemir",
+  "author": "iammolinaDev",
   "license": "MIT",
-  "repository": "CagriAldemir/react-cache-buster",
+  "repository": "iammolinadev/react-cache-buster",
   "keywords": [
     "react",
     "cache-busting",
