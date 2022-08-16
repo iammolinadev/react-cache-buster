@@ -68,8 +68,6 @@ function CacheBuster({
     } catch (error) {
       log('An error occurred while checking cache status.', true);
       log(error, true);
-
-      //Since there is an error, if isVerboseMode is false, the component is configured as if it has the latest version.
       setCacheStatus({
         loading: false,
         isLatestVersion: true
@@ -109,7 +107,7 @@ function CacheBuster({
 
 CacheBuster.propTypes = {
   children: PropTypes.element.isRequired,
-  currentVersion: PropTypes.string,
+  nowVersion: PropTypes.string,
   comparationVersion: PropTypes.string,
   isEnabled: PropTypes.bool,
   isVerboseMode: PropTypes.bool,
