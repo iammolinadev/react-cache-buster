@@ -9,7 +9,7 @@ function CacheBuster({
   isEnabled = false,
   isVerboseMode = false,
   loadingComponent = null,
-  onCacheClear
+  onCacheClear = () => null
 }) {
   const [cacheStatus, setCacheStatus] = useState({
     loading: true,
@@ -38,13 +38,13 @@ function CacheBuster({
   };
 
   useEffect(() => {
-    isEnabled ? checkCacheStatus() : log('React Cache Buster is disableds.');
+    isEnabled ? checkCacheStatus() : log('React Cache Buster is disabled');
   }, []);
 
   const checkCacheStatus = async () => {
     try {
       const metaVersion = await handleMetaVersion();
-      if (!handleCurrentVersion()) {
+      if (!metaVersion) {
         window.localStorage.setItem('version', metaVersion);
       }
       const shouldForceRefresh = isThereNewVersion(
@@ -54,6 +54,8 @@ function CacheBuster({
       if (shouldForceRefresh) {
         log(`There is a new version (v${metaVersion}). Should force refresh.`);
         window.localStorage.setItem('version', metaVersion);
+        await onCacheClear();
+        await refreshCacheAndReload();
         setCacheStatus({
           loading: false,
           isLatestVersion: false
@@ -99,20 +101,11 @@ function CacheBuster({
     }
   };
 
-  if (!isEnabled) {
-    return children;
-  } else {
-    if (cacheStatus.loading) {
-      return loadingComponent;
-    }
-
-    if (!cacheStatus.loading && !cacheStatus.isLatestVersion) {
-      onCacheClear && onCacheClear();
-      refreshCacheAndReload();
-      return null;
-    }
-    return children;
+  if (cacheStatus.loading) {
+    return loadingComponent;
   }
+
+  return children;
 }
 
 CacheBuster.propTypes = {
