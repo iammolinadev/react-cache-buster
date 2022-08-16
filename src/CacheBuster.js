@@ -43,10 +43,10 @@ function CacheBuster({
 
   const checkCacheStatus = async () => {
     try {
+      const metaVersion = await handleMetaVersion();
       if (!handleCurrentVersion()) {
         window.localStorage.setItem('version', metaVersion);
       }
-      const metaVersion = await handleMetaVersion();
       const currentVersion = handleCurrentVersion();
       const shouldForceRefresh = isThereNewVersion(metaVersion, currentVersion);
       if (shouldForceRefresh) {
