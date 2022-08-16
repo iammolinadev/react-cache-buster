@@ -20,7 +20,7 @@ function CacheBuster({
   };
 
   useEffect(() => {
-    isEnabled ? checkCacheStatus() : log('React Cache Buster is disabled.');
+    isEnabled ? checkCacheStatus() : log('React Cache Buster is disableds.');
   }, []);
 
   const checkCacheStatus = async () => {
