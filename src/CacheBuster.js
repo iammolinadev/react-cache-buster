@@ -43,11 +43,11 @@ function CacheBuster({
 
   const checkCacheStatus = async () => {
     try {
-      const metaVersion = await handleMetaVersion();
-      const currentVersion = handleCurrentVersion();
-      if (!currentVersion) {
+      if (!handleCurrentVersion()) {
         window.localStorage.setItem('version', metaVersion);
       }
+      const metaVersion = await handleMetaVersion();
+      const currentVersion = handleCurrentVersion();
       const shouldForceRefresh = isThereNewVersion(metaVersion, currentVersion);
       if (shouldForceRefresh) {
         log(`There is a new version (v${metaVersion}). Should force refresh.`);
@@ -77,7 +77,7 @@ function CacheBuster({
 
   const isThereNewVersion = (metaVersion, currentVersion) => {
     log(`meta(v${metaVersion}).`);
-    log(`meta(v${currentVersion}).`);
+    log(`current(v${currentVersion}).`);
     return compare(metaVersion, currentVersion, '>');
   };
 
