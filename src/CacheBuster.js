@@ -4,7 +4,7 @@ import { compare } from 'compare-versions';
 
 function CacheBuster({
   children = null,
-  currentVersion = null,
+  nowVersion = null,
   comparationVersion = null,
   isEnabled = false,
   isVerboseMode = false,
@@ -21,7 +21,7 @@ function CacheBuster({
   };
 
   const handleCurrentVersion = () => {
-    return currentVersion ?? window.localStorage.getItem('version') ?? false;
+    return nowVersion ?? window.localStorage.getItem('version') ?? false;
   };
 
   const handleMetaVersion = async () => {
@@ -44,13 +44,11 @@ function CacheBuster({
   const checkCacheStatus = async () => {
     try {
       const metaVersion = await handleMetaVersion();
-      if (!metaVersion) {
+      const currentVersion = handleCurrentVersion();
+      if (!currentVersion) {
         window.localStorage.setItem('version', metaVersion);
       }
-      const shouldForceRefresh = isThereNewVersion(
-        metaVersion,
-        handleCurrentVersion()
-      );
+      const shouldForceRefresh = isThereNewVersion(metaVersion, currentVersion);
       if (shouldForceRefresh) {
         log(`There is a new version (v${metaVersion}). Should force refresh.`);
         window.localStorage.setItem('version', metaVersion);
@@ -80,6 +78,8 @@ function CacheBuster({
   };
 
   const isThereNewVersion = (metaVersion, currentVersion) => {
+    log(`meta(v${metaVersion}).`);
+    log(`meta(v${currentVersion}).`);
     return compare(metaVersion, currentVersion, '>');
   };
 
