@@ -72,11 +72,10 @@ function CacheBuster({
       log(error, true);
 
       //Since there is an error, if isVerboseMode is false, the component is configured as if it has the latest version.
-      !isVerboseMode &&
-        setCacheStatus({
-          loading: false,
-          isLatestVersion: true
-        });
+      setCacheStatus({
+        loading: false,
+        isLatestVersion: true
+      });
     }
   };
 
