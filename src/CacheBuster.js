@@ -33,7 +33,7 @@ function CacheBuster({
       const { version: metaVersion } = await res.json();
       return metaVersion;
     } catch (e) {
-      return false;
+      throw new Error('meta not read');
     }
   };
 
