@@ -1,6 +1,6 @@
 # React Cache Buster
 
-[![NPM](https://img.shields.io/npm/v/react-cache-buster.svg)](https://www.npmjs.com/package/react-cache-buster)
+[![NPM](https://img.shields.io/npm/v/react-iammolina-cache-buster.svg)](https://www.npmjs.com/package/react-iammolina-cache-buster)
 
 ### About the Package
 
@@ -9,11 +9,11 @@ This package allows clients to automatically check the new version when a new ve
 ### Installation
 
 ```bash
-npm install react-cache-buster
+npm install react-iammolina-cache-buster
 
 #or
 
-yarn add react-cache-buster
+yarn add react-iammolina-cache-buster
 ```
 
 ### Usage
@@ -23,7 +23,7 @@ Add a new script to package.json
 ```bash
 "scripts": {
   #...
-  "generate-meta-tag": "node ./node_modules/react-cache-buster/dist/generate-meta-tag.js"
+  "generate-meta-tag": "node ./node_modules/react-iammolina-cache-buster/dist/generate-meta-tag.js"
   #...
 }
 ```
@@ -44,7 +44,7 @@ The "generate-meta-tag" script command creates a file named "meta.json" under th
 
 ```jsx
 import React from 'react';
-import CacheBuster from 'react-cache-buster';
+import CacheBuster from 'react-iammolina-cache-buster';
 import { version } from '../package.json';
 import Loading from './loading';
 
@@ -52,14 +52,14 @@ const App = () => {
   const isProduction = process.env.NODE_ENV === 'production';
   return (
     <CacheBuster
-      currentVersion={version}
+      nowVersion={'10.0.1'} // default window.localStorage.get('version');
+      comparationVersion={'10.0.2'} // default meta.json
+      onCacheClear={() => alert('holaaa')} //function callback
       isEnabled={isProduction} //If false, the library is disabled.
       isVerboseMode={false} //If true, the library writes verbose logs to console.
       loadingComponent={<Loading />} //If not pass, nothing appears at the time of new version check.
     >
-
       //Your actual root component...
-
     </CacheBuster>
   );
 };
