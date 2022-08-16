@@ -4,7 +4,7 @@ import { compare } from 'compare-versions';
 
 function CacheBuster({
   children = null,
-  currentVersion,
+  currentVersion = null,
   isEnabled = false,
   isVerboseMode = false,
   loadingComponent = null,
@@ -19,6 +19,10 @@ function CacheBuster({
     isVerboseMode && (isError ? console.error(message) : console.log(message));
   };
 
+  const handleCurrentVersion = () => {
+      return currentVersion ?? window.localStorage.getItem("version")  ?? false
+  }
+
   useEffect(() => {
     isEnabled ? checkCacheStatus() : log('React Cache Buster is disableds.');
   }, []);
@@ -28,9 +32,14 @@ function CacheBuster({
       const res = await fetch('/meta.json');
       const { version: metaVersion } = await res.json();
 
-      const shouldForceRefresh = isThereNewVersion(metaVersion, currentVersion);
+      if (!handleCurrentVersion()) {
+        window.localStorage.setItem("version", metaVersion);
+      }
+
+      const shouldForceRefresh = isThereNewVersion(metaVersion, handleCurrentVersion());
       if (shouldForceRefresh) {
         log(`There is a new version (v${metaVersion}). Should force refresh.`);
+        window.localStorage.setItem("version", metaVersion);
         setCacheStatus({
           loading: false,
           isLatestVersion: false
